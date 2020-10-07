@@ -1,6 +1,11 @@
 import products from './gallery-items.js';
 
 const gallery = document.querySelector('.js-gallery');
+const lightboxEl = document.querySelector('.lightbox.js-lightbox');
+const lightboxImage = document.querySelector('.lightbox__image');
+const buttonClose = document.querySelector(
+  'button[data-action="close-lightbox"]',
+);
 
 function makePictureSet({ preview, original, description }) {
   const listEl = document.createElement('li');
@@ -10,12 +15,13 @@ function makePictureSet({ preview, original, description }) {
   titleEl.classList.add('gallery__title');
   titleEl.textContent = description;
   titleEl.style.visibility = 'hidden';
+
   const imageEl = document.createElement('img');
   imageEl.classList.add('gallery__image');
   imageEl.src = preview;
-  imageEl.src = original;
   imageEl.alt = description;
   imageEl.dataset.source = original;
+
   listEl.append(titleEl, imageEl);
 
   return listEl;
@@ -24,39 +30,30 @@ function makePictureSet({ preview, original, description }) {
 const element = products.map(makePictureSet);
 gallery.append(...element);
 
-gallery.addEventListener('click', onTargetClick);
+gallery.addEventListener('click', onOpenModalClick);
+buttonClose.addEventListener('click', onCloseModalClick);
 
-function onTargetClick(event) {
+function onOpenModalClick(event) {
   if (event.target.nodeName !== 'IMG') {
     return;
   }
-
-  const originSrc = event.target.dataset.source;
-  const originAlt = event.target.alt;
-  console.log(originSrc);
-  console.log(originAlt);
-  // console.log(event);
-
-  const lightboxEl = document.querySelector('.lightbox.js-lightbox');
+  window.addEventListener('keydown', onEscKeyPress);
   lightboxEl.classList.add('is-open');
+  lightboxImage.src = event.target.dataset.source;
+  lightboxImage.alt = event.target.alt;
+}
 
-  const lightboxImage = document.querySelector('.lightbox__image');
+function onCloseModalClick(event) {
+  window.removeEventListener('keydown', onEscKeyPress);
+  lightboxEl.classList.remove('is-open');
+  lightboxImage.src = '';
+  lightboxImage.alt = '';
+}
 
-  lightboxImage.src = originSrc;
-  lightboxImage.alt = originAlt;
-  console.log(lightboxImage);
-  console.log(lightboxEl);
-
-  const buttonClose = document.querySelector(
-    'button[data-action="close-lightbox"]',
-  );
-
-  buttonClose.addEventListener('click', onCloseModalClick);
-
-  function onCloseModalClick(event) {
+function onEscKeyPress(event) {
+  if (event.code === 'Escape') {
     lightboxEl.classList.remove('is-open');
     lightboxImage.src = '';
     lightboxImage.alt = '';
   }
-  console.log(buttonClose);
 }
