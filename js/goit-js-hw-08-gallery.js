@@ -32,6 +32,7 @@ gallery.append(...element);
 
 gallery.addEventListener('click', onOpenModalClick);
 buttonClose.addEventListener('click', onCloseModalClick);
+lightboxEl.addEventListener('click', onCloseModalByOverlay);
 
 function onOpenModalClick(event) {
   if (event.target.nodeName !== 'IMG') {
@@ -52,6 +53,14 @@ function onCloseModalClick(event) {
 
 function onEscKeyPress(event) {
   if (event.code === 'Escape') {
+    lightboxEl.classList.remove('is-open');
+    lightboxImage.src = '';
+    lightboxImage.alt = '';
+  }
+}
+
+function onCloseModalByOverlay(event) {
+  if (event.target.classList.value === 'lightbox__overlay') {
     lightboxEl.classList.remove('is-open');
     lightboxImage.src = '';
     lightboxImage.alt = '';
