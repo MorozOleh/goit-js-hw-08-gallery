@@ -30,29 +30,25 @@ function makePictureSet({ preview, original, description }) {
 const element = products.map(makePictureSet);
 gallery.append(...element);
 
-const galleryList = document.querySelectorAll('.gallery__list');
-console.log(galleryList);
-
-gallery.addEventListener('click', onOpenModalClick);
-buttonClose.addEventListener('click', onCloseModalClick);
+gallery.addEventListener('click', onOpenModalByClick);
+buttonClose.addEventListener('click', onCloseModalByClick);
 lightboxEl.addEventListener('click', onCloseModalByOverlay);
 
-function onOpenModalClick(event) {
+function onOpenModalByClick(event) {
   if (event.target.nodeName !== 'IMG') {
     return;
   }
 
-  window.addEventListener('keydown', onEscKeyPress);
+  window.addEventListener('keydown', onCloseModalByEscKeydown);
   lightboxEl.classList.add('is-open');
 
-  console.log(gallery.children);
   lightboxImage.src = event.target.dataset.source;
   lightboxImage.alt = event.target.alt;
 
-  window.addEventListener('keydown', onMovePictures);
+  window.addEventListener('keydown', onMovePicturesByKeydown);
 }
 
-function onMovePictures(event) {
+function onMovePicturesByKeydown(event) {
   const [...rest] = gallery.children;
   const restSrc = [];
   const restAlt = [];
@@ -90,7 +86,7 @@ function onMovePictures(event) {
   }
 }
 
-function onCloseModalClick(event) {
+function onCloseModalByClick(event) {
   lightboxEl.classList.remove('is-open');
   lightboxImage.src = '';
   lightboxImage.alt = '';
@@ -98,7 +94,7 @@ function onCloseModalClick(event) {
   window.removeEventListener('keydown', onEscKeyPress);
 }
 
-function onEscKeyPress(event) {
+function onCloseModalByEscKeydown(event) {
   if (event.code === 'Escape') {
     lightboxEl.classList.remove('is-open');
     lightboxImage.src = '';
