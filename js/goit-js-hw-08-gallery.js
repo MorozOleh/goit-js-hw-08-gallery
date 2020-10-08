@@ -30,6 +30,9 @@ function makePictureSet({ preview, original, description }) {
 const element = products.map(makePictureSet);
 gallery.append(...element);
 
+const galleryList = document.querySelectorAll('.gallery__list');
+console.log(galleryList);
+
 gallery.addEventListener('click', onOpenModalClick);
 buttonClose.addEventListener('click', onCloseModalClick);
 lightboxEl.addEventListener('click', onCloseModalByOverlay);
@@ -38,17 +41,61 @@ function onOpenModalClick(event) {
   if (event.target.nodeName !== 'IMG') {
     return;
   }
+
   window.addEventListener('keydown', onEscKeyPress);
   lightboxEl.classList.add('is-open');
+
+  console.log(gallery.children);
   lightboxImage.src = event.target.dataset.source;
   lightboxImage.alt = event.target.alt;
+
+  window.addEventListener('keydown', onMovePictures);
+}
+
+function onMovePictures(event) {
+  const [...rest] = gallery.children;
+  const restSrc = [];
+  const restAlt = [];
+  for (let i = 0; i < rest.length; i += 1) {
+    restSrc.push(rest[i].childNodes[1].dataset.source);
+    restAlt.push(rest[i].childNodes[1].alt);
+  }
+
+  console.log(restSrc);
+  let indexOfPicture;
+
+  if (restSrc.includes(lightboxImage.src)) {
+    indexOfPicture = restSrc.indexOf(lightboxImage.src);
+  }
+
+  if (event.code === 'ArrowRight') {
+    let moveForward = indexOfPicture + 1;
+
+    if (moveForward === restSrc.length) {
+      moveForward = 0;
+    }
+    lightboxImage.src = restSrc[moveForward];
+    lightboxImage.alt = restAlt[moveForward];
+  }
+
+  if (event.code === 'ArrowLeft') {
+    let moveBack = indexOfPicture - 1;
+
+    if (moveBack === -1) {
+      moveBack = restSrc.length - 1;
+    }
+
+    lightboxImage.src = restSrc[moveBack];
+    lightboxImage.alt = restAlt[moveBack];
+  }
 }
 
 function onCloseModalClick(event) {
-  window.removeEventListener('keydown', onEscKeyPress);
   lightboxEl.classList.remove('is-open');
   lightboxImage.src = '';
   lightboxImage.alt = '';
+  window.removeEventListener('keydown', onMovePictures);
+  window.removeEventListener('keydown', onEscKeyPress);
 }
 
 function onEscKeyPress(event) {
@@ -56,6 +103,8 @@ function onEscKeyPress(event) {
     lightboxEl.classList.remove('is-open');
     lightboxImage.src = '';
     lightboxImage.alt = '';
+    window.removeEventListener('keydown', onMovePictures);
+    window.removeEventListener('keydown', onEscKeyPress);
   }
 }
 
@@ -64,5 +113,7 @@ function onCloseModalByOverlay(event) {
     lightboxEl.classList.remove('is-open');
     lightboxImage.src = '';
     lightboxImage.alt = '';
+    window.removeEventListener('keydown', onMovePictures);
+    window.removeEventListener('keydown', onEscKeyPress);
   }
 }
