@@ -90,8 +90,8 @@ function onCloseModalByClick(event) {
   lightboxEl.classList.remove('is-open');
   lightboxImage.src = '';
   lightboxImage.alt = '';
-  window.removeEventListener('keydown', onMovePictures);
-  window.removeEventListener('keydown', onEscKeyPress);
+  window.removeEventListener('keydown', onMovePicturesByKeydown);
+  window.removeEventListener('keydown', onCloseModalByEscKeydown);
 }
 
 function onCloseModalByEscKeydown(event) {
@@ -99,8 +99,8 @@ function onCloseModalByEscKeydown(event) {
     lightboxEl.classList.remove('is-open');
     lightboxImage.src = '';
     lightboxImage.alt = '';
-    window.removeEventListener('keydown', onMovePictures);
-    window.removeEventListener('keydown', onEscKeyPress);
+    window.removeEventListener('keydown', onMovePicturesByKeydown);
+    window.removeEventListener('keydown', onCloseModalByEscKeydown);
   }
 }
 
@@ -109,7 +109,7 @@ function onCloseModalByOverlay(event) {
     lightboxEl.classList.remove('is-open');
     lightboxImage.src = '';
     lightboxImage.alt = '';
-    window.removeEventListener('keydown', onMovePictures);
-    window.removeEventListener('keydown', onEscKeyPress);
+    window.removeEventListener('keydown', onMovePicturesByKeydown);
+    window.removeEventListener('keydown', onCloseModalByEscKeydown);
   }
 }
