@@ -86,29 +86,25 @@ function onMovePicturesByKeydown(event) {
 }
 
 function onCloseModalByClick(event) {
-  lightboxEl.classList.remove('is-open');
-  lightboxImage.src = '';
-  lightboxImage.alt = '';
-  window.removeEventListener('keydown', onMovePicturesByKeydown);
-  window.removeEventListener('keydown', onCloseModalByEscKeydown);
+  removeClassAndListener();
 }
 
 function onCloseModalByEscKeydown(event) {
   if (event.code === 'Escape') {
-    lightboxEl.classList.remove('is-open');
-    lightboxImage.src = '';
-    lightboxImage.alt = '';
-    window.removeEventListener('keydown', onMovePicturesByKeydown);
-    window.removeEventListener('keydown', onCloseModalByEscKeydown);
+    removeClassAndListener();
   }
 }
 
 function onCloseModalByOverlay(event) {
   if (event.target.classList.value === 'lightbox__overlay') {
-    lightboxEl.classList.remove('is-open');
-    lightboxImage.src = '';
-    lightboxImage.alt = '';
-    window.removeEventListener('keydown', onMovePicturesByKeydown);
-    window.removeEventListener('keydown', onCloseModalByEscKeydown);
+    removeClassAndListener();
   }
+}
+
+function removeClassAndListener() {
+  lightboxEl.classList.remove('is-open');
+  lightboxImage.src = '';
+  lightboxImage.alt = '';
+  window.removeEventListener('keydown', onMovePicturesByKeydown);
+  window.removeEventListener('keydown', onCloseModalByEscKeydown);
 }
