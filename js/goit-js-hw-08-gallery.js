@@ -57,7 +57,6 @@ function onMovePicturesByKeydown(event) {
     restAlt.push(rest[i].childNodes[1].alt);
   }
 
-  console.log(restSrc);
   let indexOfPicture;
 
   if (restSrc.includes(lightboxImage.src)) {
